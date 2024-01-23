@@ -11,7 +11,50 @@ public class Main {
 
 //        System.out.println(reverseStrStack(sc));
 //        System.out.println(stackOps(Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray(), sc));
-        browserOps(sc);
+//        browserOps(sc);
+        calculator(sc);
+    }
+
+    private static void calculator(Scanner sc) {
+        String[] tokens = sc.nextLine().split(" ");
+        ArrayDeque<String> operations = new ArrayDeque<String>();
+        ArrayDeque<Integer> nums = new ArrayDeque<Integer>();
+
+        for (String token : tokens) {
+            if (Character.isDigit(token.charAt(0))) {
+                nums.add(Integer.parseInt(token));
+            } else {
+                operations.add(token);
+            }
+        }
+
+        if (nums.isEmpty()) {
+            System.out.println(0);
+            return;
+        }
+
+        int result = nums.pop();
+
+        while (!nums.isEmpty()) {
+            if (operations.isEmpty()) {
+                break;
+            }
+
+            String op = operations.pop();
+
+            switch (op) {
+                case "+": {
+                    result += nums.pop();
+                    break;
+                }
+                case "-": {
+                    result -= nums.pop();
+                    break;
+                }
+            }
+        }
+
+        System.out.println(result);
     }
 
     private static void browserOps(Scanner sc) {
