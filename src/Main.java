@@ -12,7 +12,28 @@ public class Main {
 //        System.out.println(reverseStrStack(sc));
 //        System.out.println(stackOps(Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray(), sc));
 //        browserOps(sc);
-        calculator(sc);
+//        calculator(sc);
+        decimalToBinary(sc.nextInt());
+    }
+
+    private static void decimalToBinary(int input) {
+        if (input == 0) {
+            System.out.println(0);
+            return;
+        }
+
+        ArrayDeque<Integer> num = new ArrayDeque<Integer>();
+        while (input != 0) {
+            num.push(input % 2);
+            input /= 2;
+        }
+
+        StringBuilder result = new StringBuilder(num.size());
+        while (!num.isEmpty()) {
+            result.append(num.pop());
+        }
+
+        System.out.println(result);
     }
 
     private static void calculator(Scanner sc) {
