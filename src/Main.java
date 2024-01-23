@@ -13,7 +13,60 @@ public class Main {
 //        calculator(sc);
 //        decimalToBinary(sc.nextInt());
 //        bracketMatch(sc.nextLine());
-        printerQue(sc);
+//        printerQue(sc);
+        balanceParentheses(sc.nextLine());
+    }
+
+    private static void balanceParentheses(String input) {
+        ArrayDeque<Character> currentParentheses = new ArrayDeque<Character>();
+
+        for (char item : input.toCharArray()) {
+            switch (item) {
+                case '(':
+                case '{':
+                case '[': {
+                    currentParentheses.push(item);
+                    break;
+                }
+                case ')':
+                case '}':
+                case ']': {
+                    if (currentParentheses.isEmpty()) {
+                        System.out.println(false);
+                        return;
+                    }
+
+                    char prev = currentParentheses.peek();
+
+                    switch (item) {
+                        case ')': {
+                            if (prev != '(') {
+                                System.out.println(false);
+                                return;
+                            }
+                            break;
+                        }
+                        case '}': {
+                            if (prev != '{') {
+                                System.out.println(false);
+                                return;
+                            }
+                            break;
+                        }
+                        case ']': {
+                            if (prev != '[') {
+                                System.out.println(false);
+                                return;
+                            }
+                            break;
+                        }
+                    }
+
+                    currentParentheses.pop();
+                }
+            }
+        }
+        System.out.println(true);
     }
 
     private static void printerQue(Scanner sc) {
