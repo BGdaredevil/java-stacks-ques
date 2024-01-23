@@ -15,7 +15,33 @@ public class Main {
 //        bracketMatch(sc.nextLine());
 //        printerQue(sc);
 //        balanceParentheses(sc.nextLine());
-        hotPotato(sc);
+//        hotPotato(sc);
+        maxElement(sc);
+    }
+
+    private static void maxElement(Scanner sc) {
+        int comandCount = Integer.parseInt(sc.nextLine());
+        String command = sc.nextLine();
+        ArrayDeque<Integer> stack = new ArrayDeque<Integer>();
+
+        while (comandCount > 0) {
+            String[] comandParams = command.split(" ");
+
+            switch (comandParams[0]) {
+                case "1" -> stack.push(Integer.parseInt(comandParams[1]));
+                case "2" -> stack.poll();
+                case "3" -> {
+                    Optional<Integer> max = stack.stream().max(Comparator.comparingInt(a -> a));
+                    max.ifPresent(System.out::println);
+                }
+            }
+
+            comandCount--;
+            if (comandCount > 0) {
+                System.out.println("get");
+                command = sc.nextLine();
+            }
+        }
 
     }
 
