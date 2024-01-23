@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -8,9 +9,44 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.println("input");
 
-        System.out.println(reverseStrStack(sc));
+
+//        System.out.println(reverseStrStack(sc));
+        System.out.println(stackOps(Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray(), sc));
     }
 
+    private static String stackOps(int[] args, Scanner sc) {
+        int stackLength = args[0];
+        int removeCount = args[1];
+        int itemToFind = args[2];
+        ArrayDeque<Integer> stack = new ArrayDeque<Integer>(stackLength);
+        System.out.println("get nums");
+        int[] inputNums = Arrays.stream(sc.nextLine().split("\\s+")).mapToInt(Integer::parseInt).toArray();
+
+        for (int num : inputNums) {
+            stack.push(num);
+        }
+
+        while (removeCount > 0) {
+            stack.pop();
+            removeCount--;
+        }
+
+        if (stack.isEmpty()) {
+            return "0";
+        }
+
+        if (stack.contains(itemToFind)) {
+            return "true";
+        }
+        int lowest = Integer.MAX_VALUE;
+        for (int item : stack) {
+            if (item < lowest) {
+                lowest = item;
+            }
+        }
+
+        return lowest + "";
+    }
     private static String reverseStrStack(Scanner scanner) {
         int length = Integer.parseInt(scanner.nextLine());
         ArrayDeque<Integer> deck = new ArrayDeque<>(length);
