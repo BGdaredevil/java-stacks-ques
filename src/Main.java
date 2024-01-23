@@ -1,6 +1,4 @@
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -14,10 +12,42 @@ public class Main {
 //        browserOps(sc);
 //        calculator(sc);
 //        decimalToBinary(sc.nextInt());
-        bracketMatch(sc.nextLine());
+//        bracketMatch(sc.nextLine());
+        printerQue(sc);
     }
 
-    private  static void bracketMatch(String input) {
+    private static void printerQue(Scanner sc) {
+        String comand = sc.nextLine();
+        ArrayDeque<String> printTail = new ArrayDeque<String>();
+        ArrayList<String> output = new ArrayList<String>();
+
+        while (!comand.equals("print")) {
+            if (comand.equals("cancel")) {
+                String item = printTail.pollFirst();
+                if (item == null) {
+                    output.add("Standby");
+                } else {
+                    output.add("Canceled " + item);
+                }
+            } else {
+                printTail.offer(comand);
+            }
+
+            System.out.println("input");
+            comand = sc.nextLine();
+        }
+
+        while (!printTail.isEmpty()) {
+            output.add(printTail.pop());
+        }
+
+        for (String row : output) {
+            System.out.println(row);
+        }
+
+    }
+
+    private static void bracketMatch(String input) {
         ArrayDeque<Integer> currentStartIndex = new ArrayDeque<Integer>();
         ArrayDeque<String> subComponents = new ArrayDeque<String>();
 
@@ -26,7 +56,7 @@ public class Main {
             switch (item) {
                 case '(' -> currentStartIndex.push(i);
                 case ')' -> {
-                    subComponents.add(input.substring(currentStartIndex.pop(), i+1));
+                    subComponents.add(input.substring(currentStartIndex.pop(), i + 1));
                 }
             }
         }
@@ -36,6 +66,7 @@ public class Main {
         }
 
     }
+
     private static void decimalToBinary(int input) {
         if (input == 0) {
             System.out.println(0);
