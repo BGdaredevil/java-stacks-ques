@@ -14,7 +14,27 @@ public class Main {
 //        decimalToBinary(sc.nextInt());
 //        bracketMatch(sc.nextLine());
 //        printerQue(sc);
-        balanceParentheses(sc.nextLine());
+//        balanceParentheses(sc.nextLine());
+        hotPotato(sc);
+
+    }
+
+    private static void hotPotato(Scanner sc) {
+        ArrayList<String> kids = new ArrayList<String>(Arrays.stream(sc.nextLine().split("\\s+")).toList());
+        int count = sc.nextInt();
+        int tempCount = (count - 1) % kids.size();
+
+        while (kids.size() > 1) {
+            while (tempCount > 0) {
+                kids.addLast(kids.removeFirst());
+                tempCount--;
+            }
+
+            System.out.println("Removed " + kids.removeFirst());
+            tempCount = (count - 1) % kids.size();
+        }
+
+        System.out.println("Last is " + kids.getFirst());
     }
 
     private static void balanceParentheses(String input) {
