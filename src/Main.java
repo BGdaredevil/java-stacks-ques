@@ -9,9 +9,35 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.println("input");
 
-
 //        System.out.println(reverseStrStack(sc));
-        System.out.println(stackOps(Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray(), sc));
+//        System.out.println(stackOps(Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray(), sc));
+        browserOps(sc);
+    }
+
+    private static void browserOps(Scanner sc) {
+        ArrayDeque<String> history = new ArrayDeque<String>();
+        String command = sc.nextLine();
+        String currentUrl = "";
+
+        while (!command.equals("Home")) {
+            if (command.equals("back")) {
+                if (!history.isEmpty()) {
+                    history.pop();
+                }
+            } else {
+                history.push(command);
+            }
+
+            if (history.isEmpty()) {
+                System.out.println("no previous URLs");
+            } else {
+                currentUrl = history.peek();
+                System.out.println(currentUrl);
+            }
+
+            command = sc.nextLine();
+        }
+
     }
 
     private static String stackOps(int[] args, Scanner sc) {
@@ -47,6 +73,7 @@ public class Main {
 
         return lowest + "";
     }
+
     private static String reverseStrStack(Scanner scanner) {
         int length = Integer.parseInt(scanner.nextLine());
         ArrayDeque<Integer> deck = new ArrayDeque<>(length);
@@ -65,7 +92,7 @@ public class Main {
 
         result.append("\n");
 
-        return  result.toString().trim();
+        return result.toString().trim();
 
     }
 }
