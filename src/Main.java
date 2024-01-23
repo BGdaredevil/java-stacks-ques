@@ -13,9 +13,29 @@ public class Main {
 //        System.out.println(stackOps(Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray(), sc));
 //        browserOps(sc);
 //        calculator(sc);
-        decimalToBinary(sc.nextInt());
+//        decimalToBinary(sc.nextInt());
+        bracketMatch(sc.nextLine());
     }
 
+    private  static void bracketMatch(String input) {
+        ArrayDeque<Integer> currentStartIndex = new ArrayDeque<Integer>();
+        ArrayDeque<String> subComponents = new ArrayDeque<String>();
+
+        for (int i = 0; i < input.length(); i++) {
+            char item = input.charAt(i);
+            switch (item) {
+                case '(' -> currentStartIndex.push(i);
+                case ')' -> {
+                    subComponents.add(input.substring(currentStartIndex.pop(), i+1));
+                }
+            }
+        }
+
+        while (!subComponents.isEmpty()) {
+            System.out.println(subComponents.pop());
+        }
+
+    }
     private static void decimalToBinary(int input) {
         if (input == 0) {
             System.out.println(0);
