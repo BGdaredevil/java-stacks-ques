@@ -16,7 +16,37 @@ public class Main {
 //        printerQue(sc);
 //        balanceParentheses(sc.nextLine());
 //        hotPotato(sc);
-        maxElement(sc);
+//        maxElement(sc);
+        queOperations(sc);
+    }
+
+    private static void queOperations(Scanner sc) {
+        int[] commands = Arrays.stream(sc.nextLine().split("\\s+")).mapToInt(Integer::parseInt).toArray();
+        int countAdd = commands[0];
+        int countRem = commands[1];
+        int toFInd = commands[2];
+        ArrayDeque<Integer> items = new ArrayDeque<Integer>(countAdd);
+        System.out.println("get input");
+        int[] input = Arrays.stream(sc.nextLine().split("\\s+")).mapToInt(Integer::parseInt).toArray();
+
+        for (int item : input) {
+            if (countAdd <= 0) {
+                break;
+            }
+            items.add(item);
+            countAdd--;
+        }
+
+        for (int i = 0; i < countRem; i++) {
+            items.poll();
+        }
+
+        Optional<Integer> found = items.stream().filter(e -> e == toFInd).findFirst();
+
+        found.ifPresentOrElse(
+                integer -> System.out.println(true),
+                () -> items.stream().min(Integer::compareTo).ifPresent(System.out::println)
+        );
     }
 
     private static void maxElement(Scanner sc) {
