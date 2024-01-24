@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -18,7 +19,40 @@ public class Main {
 //        hotPotato(sc);
 //        maxElement(sc);
 //        queOperations(sc);
-        taskScheduler(sc);
+//        taskScheduler(sc);
+        documentEditor(sc);
+    }
+
+    private static void documentEditor(Scanner sc) {
+        String[] commands = sc.nextLine().split("\\(\"?|\"?\\)");
+        ArrayDeque<String> history = new ArrayDeque<String>();
+        ArrayDeque<String> redo = new ArrayDeque<String>();
+
+        while (!commands[0].equals("End")) {
+            switch (commands[0]) {
+                case "Insert": {
+                    redo.clear();
+                    history.add(commands[1]);
+                    break;
+                }
+                case "Undo": {
+                    if (!history.isEmpty()) {
+                        redo.add(history.pollLast());
+                    }
+                    break;
+                }
+                case "Redo": {
+                    if (!redo.isEmpty()) {
+                        history.add(redo.pollLast());
+                    }
+                    break;
+                }
+            }
+
+            System.out.println(String.join("", history));
+
+            commands = sc.nextLine().split("\\(\"?|\"?\\)");
+        }
 
     }
 
