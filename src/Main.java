@@ -17,7 +17,40 @@ public class Main {
 //        balanceParentheses(sc.nextLine());
 //        hotPotato(sc);
 //        maxElement(sc);
-        queOperations(sc);
+//        queOperations(sc);
+        taskScheduler(sc);
+
+    }
+
+    private static void taskScheduler(Scanner sc) {
+        ArrayDeque<Task> priorityTask = new ArrayDeque<Task>();
+        String input = sc.nextLine();
+
+        while (!input.isEmpty()) {
+            String[] comandProps = input.split(" ");
+
+            if (comandProps[0].equals("Add")) {
+                Task item = new Task(comandProps[1], Integer.parseInt(comandProps[2]));
+                priorityTask.add(item);
+                input = sc.nextLine();
+                continue;
+            }
+
+            if (comandProps[0].equals("getNextTask")) {
+                Optional<Task> item = priorityTask.stream().max(Comparator.comparingInt(a -> a.priority));
+                item.ifPresent(priorityTask::remove);
+                item.ifPresentOrElse(
+                        task -> System.out.printf("%s - %d\n", task.name, task.priority),
+                        () -> System.out.println("empty")
+                );
+                input = sc.nextLine();
+                continue;
+            }
+
+            System.out.println("invalid input");
+            input = sc.nextLine();
+        }
+
     }
 
     private static void queOperations(Scanner sc) {
