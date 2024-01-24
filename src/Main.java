@@ -1,3 +1,6 @@
+import factorio.Clock;
+import factorio.Robot;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,7 +23,85 @@ public class Main {
 //        maxElement(sc);
 //        queOperations(sc);
 //        taskScheduler(sc);
-        documentEditor(sc);
+//        documentEditor(sc);
+//        System.out.println(recursiveFibonachi(sc.nextInt()));
+
+        factorio(sc);
+    }
+
+    private static void factorio(Scanner sc) {
+        String[] input = sc.nextLine().split("\\|");
+        ArrayDeque<Robot> robotList = new ArrayDeque<>(input.length);
+        ArrayDeque<String> jobList = new ArrayDeque<>();
+        HashMap<String, Robot> robotJobs = new HashMap<>(input.length);
+
+        System.out.println("getStart");
+        int[] time = Arrays.stream(sc.nextLine().split(":")).mapToInt(Integer::parseInt).toArray();
+        Clock clock = new Clock(time[0], time[1], time[2]);
+
+        for (String item : input) {
+            String[] params = item.split("-");
+            robotList.add(new Robot(params[0], Integer.parseInt(params[1])));
+        }
+
+        String comand = sc.nextLine();
+
+        while (!comand.equals("End")) {
+            jobList.add(comand);
+            comand = sc.nextLine();
+        }
+
+        while (!jobList.isEmpty()) {
+            clock.tick();
+            String currentTime = clock.getTime();
+
+            Robot isDone = robotJobs.get(currentTime);
+            if (isDone != null) {
+                robotList.add(isDone);
+                robotJobs.remove(currentTime);
+            }
+
+            String job = jobList.peek();
+            Robot freeRobot = robotList.peek();
+
+            if (job != null && freeRobot != null) {
+                String timeDone = clock.getFutureTime(freeRobot.processTime);
+                jobList.pop();
+                robotList.pop();
+                robotJobs.put(timeDone, freeRobot);
+                System.out.println(freeRobot.name + " - " + job + " [" + currentTime + "]");
+            }
+
+        }
+
+    }
+
+    private static HashMap<Integer, Integer> fibonachiMemo = new HashMap<Integer, Integer>();
+
+    private static int recursiveFibonachi(int depth) {
+        int result = 0;
+
+        if (depth == 0) {
+            return result;
+        }
+
+        if (depth == 1) {
+            result = 1;
+            return result;
+        }
+
+        var memo = fibonachiMemo.get(depth);
+
+        if (memo != null) {
+            result = memo;
+            return result;
+        }
+
+        result = recursiveFibonachi(depth - 1) + recursiveFibonachi(depth - 2);
+
+        fibonachiMemo.put(depth, result);
+
+        return result;
     }
 
     private static void documentEditor(Scanner sc) {
@@ -73,10 +154,7 @@ public class Main {
             if (comandProps[0].equals("getNextTask")) {
                 Optional<Task> item = priorityTask.stream().max(Comparator.comparingInt(a -> a.priority));
                 item.ifPresent(priorityTask::remove);
-                item.ifPresentOrElse(
-                        task -> System.out.printf("%s - %d\n", task.name, task.priority),
-                        () -> System.out.println("empty")
-                );
+                item.ifPresentOrElse(task -> System.out.printf("%s - %d\n", task.name, task.priority), () -> System.out.println("empty"));
                 input = sc.nextLine();
                 continue;
             }
@@ -110,10 +188,7 @@ public class Main {
 
         Optional<Integer> found = items.stream().filter(e -> e == toFInd).findFirst();
 
-        found.ifPresentOrElse(
-                integer -> System.out.println(true),
-                () -> items.stream().min(Integer::compareTo).ifPresent(System.out::println)
-        );
+        found.ifPresentOrElse(integer -> System.out.println(true), () -> items.stream().min(Integer::compareTo).ifPresent(System.out::println));
     }
 
     private static void maxElement(Scanner sc) {
